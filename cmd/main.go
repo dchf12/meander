@@ -7,7 +7,6 @@ import (
 )
 
 func main() {
-	// meander.APIKey = "TODO"
 	http.HandleFunc("/journeys", func(w http.ResponseWriter, r *http.Request) {
 		_ = respond(w, r, meander.Journeys)
 	})

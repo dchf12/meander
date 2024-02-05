@@ -1,5 +1,12 @@
 package meander
 
+import (
+	_ "embed"
+)
+
+//go:embed google_places_key
+var APIKey string
+
 type Place struct {
 	*googleGeometry `json:"geometry"`
 	Name            string         `json:"name"`
