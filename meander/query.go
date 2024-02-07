@@ -85,7 +85,7 @@ func (q *Query) find(types string) (*googleResponse, error) {
 	return &response, nil
 }
 
-func (q *Query) Run() any {
+func (q *Query) Run() []any {
 	var wg sync.WaitGroup
 	places := make([]any, len(q.Journey))
 	for i, r := range q.Journey {
