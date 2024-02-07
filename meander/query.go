@@ -7,6 +7,7 @@ import (
 	"math/rand"
 	"net/http"
 	"net/url"
+	"strings"
 	"sync"
 )
 
@@ -14,7 +15,7 @@ import (
 var APIKey string
 
 type Place struct {
-	*googleGeometry `json:"geometry"`
+	*GoogleGeometry `json:"geometry"`
 	Name            string         `json:"name"`
 	Icon            string         `json:"icon"`
 	Photos          []*googlePhoto `json:"photos"`
@@ -25,11 +26,11 @@ type googleResponse struct {
 	Results []*Place `json:"results"`
 }
 
-type googleGeometry struct {
-	*googleLocation `json:"location"`
+type GoogleGeometry struct {
+	*GoogleLocation `json:"location"`
 }
 
-type googleLocation struct {
+type GoogleLocation struct {
 	Lat float64 `json:"lat"`
 	Lng float64 `json:"lng"`
 }
@@ -101,8 +102,8 @@ func (q *Query) Run() []any {
 			}
 			for _, result := range resp.Results {
 				for _, photo := range result.Photos {
-					photo.URL = fmt.Sprintf("https://maps.googleapis.com/maps/api/place/photo"+
-						"?maxwidth=1000&photoreference=%s&key=%s", photo.PhotoRef, APIKey)
+					photo.URL = strings.TrimRight(fmt.Sprintf("https://maps.googleapis.com/maps/api/place/photo"+
+						"?maxwidth=1000&photo_reference=%s&key=%s", photo.PhotoRef, APIKey), "\n")
 				}
 			}
 			places[i] = resp.Results[rand.Intn(len(resp.Results))]
