@@ -4,6 +4,7 @@ import (
 	_ "embed"
 	"encoding/json"
 	"fmt"
+	"io"
 	"math/rand"
 	"net/http"
 	"net/url"
@@ -79,8 +80,10 @@ func (q *Query) find(types string) (*googleResponse, error) {
 	}
 	defer res.Body.Close()
 
+	var r io.Reader = res.Body
+	// r = io.TeeReader(r, os.Stderr)
 	var response googleResponse
-	if err := json.NewDecoder(res.Body).Decode(&response); err != nil {
+	if err := json.NewDecoder(r).Decode(&response); err != nil {
 		return nil, err
 	}
 	return &response, nil
